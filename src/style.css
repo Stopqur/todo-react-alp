@@ -242,3 +242,23 @@ ul {
     width: 25px;
     height: 25px;
 }
+
+/* Pagination */
+
+.pagination {
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+    width: 300px;
+}
+
+.pagination__btn {
+    padding: 5px 15px;
+    background-color: teal;
+    color: #000;
+    border: 1px solid #000
+}
+
+.pagination__btn + .pagination__btn {
+    margin-left: 15px;
+}

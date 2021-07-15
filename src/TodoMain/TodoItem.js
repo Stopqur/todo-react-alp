@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-export default function TodoItem({todo, todoDelete}) {
+export default function TodoItem({todo, todoDelete, number}) {
     
     const [classItem, setClassItem] = useState('taskItem__text')
 
@@ -10,12 +10,12 @@ export default function TodoItem({todo, todoDelete}) {
     function completeTodo () {
         todo.completed = !todo.completed
             if (todo.completed === true) {
-                setClassItem('taskItem__text taskItemItem__text_decor')
-                console.log(todo.completed)
+                const currentClass = 'taskItem__text taskItemItem__text_decor'
+                return setClassItem(currentClass)
 
             } else {
-                setClassItem('taskItem__text')
-                console.log(todo.completed)
+                const currentClass = 'taskItem__text'
+                return setClassItem(currentClass)
             }
         }
 
@@ -33,7 +33,7 @@ export default function TodoItem({todo, todoDelete}) {
                     checked={todo.completed}
                 />
                 <div className="taskItem__textBox">
-                    <p className={classItem}>{todo.title}</p>
+                    <p className={classItem}>{todo.title}, {number}, {`${todo.completed}`}</p>
                 </div>
                 <p className="taskItem__date">{todo.date.toLocaleString()}</p>
                 </label>

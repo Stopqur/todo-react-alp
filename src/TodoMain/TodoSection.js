@@ -4,12 +4,33 @@ import TodoTitle from './TodoTitle'
 import TodoForm from './TodoForm'
 import Options from './Options'
 import TodoItem from './TodoItem'
+import Pagination from './Pagination'
+
 
 function TodoSection({createBlock}) {
     const [todos, setTodos] = useState([])
-
+    
+    const [filterTodos, setFilterTodos] = useState([...todos])
     
     const [titleInput, setTitleInput] = useState('')
+
+    const [pagination, setPagination] = useState([])
+
+    const [loading, setLoading] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [countTodoOnPage] = useState(5)
+
+
+
+
+    // const lastIdTask = currentPage * countTodoOnPage
+
+    // const firstIdTask = lastIdTask - countTodoOnPage
+
+    // const currentTasks = filterTodos.slice(firstIdTask, lastIdTask)
+
+
+    
 
     // const [allTodo, setAllTodo] = useState(todos)
 
@@ -21,6 +42,14 @@ function TodoSection({createBlock}) {
             date: new Date()
         }
         setTodos([...todos, newItem])
+        setFilterTodos([...todos, newItem])
+       
+        if (filterTodos.length > 2) {
+            handleSliceTodos()
+            console.log('show me count todo:', filterTodos.length,filterTodos,todos)
+            const newBtn = {title: 0, id: Date.now()}
+            return setPagination([...pagination, newBtn])
+        } console.log('show me count todo:', filterTodos.length,filterTodos,todos)
     }
     
 
@@ -33,45 +62,63 @@ function TodoSection({createBlock}) {
     }
     
     function handleDeleteToDo (itemId) {
+        setFilterTodos([...filterTodos.filter(todo => todo.id !== itemId) ])
         setTodos([...todos.filter(todo => todo.id !== itemId) ])
         console.log(itemId)
     }
     
     
     // Filterbuttons
-    const [filterTodos, setFilterTodos] = useState([...todos])
 
     function handleFilterAll () {
-
-        setTodos(filterTodos)
+        setFilterTodos(todos)
     }
 
     function handleFilterDone () {
-        setFilterTodos([...todos])
-        setTodos(todos.filter(todo => todo.completed === true))
+        // setFilterTodos([...todos])
+        setFilterTodos(todos.filter(todo => todo.completed === true))
     }
 
     function handleFilterUndone () {
-        setFilterTodos([...todos])
-        setTodos(todos.filter(todo => todo.completed === false))
+        // setFilterTodos([...todos])
+        setFilterTodos(todos.filter(todo => todo.completed === false))
     }
+
 
     //Sort
 
     function handleSortEarlier () {
-        setTodos(todos.sort(function(a, b) {
-            console.log(a)
-            return a.id - b.id 
+        const sortTodo = [...filterTodos]
+        setFilterTodos(sortTodo.sort(function(a, b) {
+            console.log("1 элемент", a, "2 элемент:", b)
+            return b.id - a.id
         }))
     }
 
     function handleSortLater () {
-        setTodos(todos.sort(function(a, b) {
-            console.log(a)
-            return b.id - a.id 
+        const sortTodo = [...filterTodos]
+        setFilterTodos(sortTodo.sort(function(a, b) {
+            console.log("1 элемент", a, "2 элемент:", b)
+            return a.id - b.id 
         }))
     }
 
+    //Pagination 
+    const lastIdTask = currentPage * countTodoOnPage
+    const firstIdTask = lastIdTask - countTodoOnPage
+    const currentTasks = filterTodos.slice(firstIdTask, lastIdTask)
+    function handleSliceTodos () {
+        setFilterTodos(currentTasks)
+    }
+    
+    function handlePaginationBtn (num) {
+        const lastIdTask = num * countTodoOnPage
+        const firstIdTask = lastIdTask - countTodoOnPage
+        console.log(todos.length,num, firstIdTask, lastIdTask)
+        setFilterTodos(todos.slice(firstIdTask, lastIdTask))
+    }
+
+    
     return (
         <section className='main__menu'>
             <TodoTitle />    
@@ -83,13 +130,16 @@ function TodoSection({createBlock}) {
             />
             <Options sortTodosLater={handleSortLater} sortTodosEarlier={handleSortEarlier} filterAll={handleFilterAll} filterUndone={handleFilterUndone} filterDone={handleFilterDone}/>
             <ul className="main__taskList">
-                {todos.map((todo, index) => {
-                return <TodoItem 
-                    todoDelete={handleDeleteToDo}
-                    todo={todo} 
-                    key={index}/>
-                })}
+                {filterTodos.map((todo, index) => {
+                    return <TodoItem 
+                        number={index}
+                        todoDelete={handleDeleteToDo}
+                        todo={todo} 
+                        key={index}/>
+                    })
+                }
             </ul>
+            <Pagination btnSwitchPage={handlePaginationBtn} countTodos={todos.length} countTodoOnPage={countTodoOnPage}/>
         </section>
     )
 }
