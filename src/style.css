@@ -60,6 +60,7 @@ button {
 }
 
 p {
+    text-align: start;
     margin: 0;
     font-size: 16px;
 }
@@ -136,11 +137,10 @@ ul {
 }
 
 .main__options {
-    /* display: none; */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+    padding-bottom: 40px;
 }
 
 .btnShow + .btnShow {
@@ -206,15 +206,22 @@ ul {
 
 
 .taskItem__text {
+    position: relative;
+    padding: 5px 0;
     font-size: 20px;
     color: #fff;
 }
 
+.taskItemItem__text_decor {
+    text-decoration: line-through;
+}
+
+
 .taskItem__textBox {
     margin-left: 20px;
-    max-width: 100%;
+    width: 470px;
     border-bottom: 1px solid transparent;
-
+    overflow: hidden;
 }
 
 .taskItem:hover .taskItem__textBox{

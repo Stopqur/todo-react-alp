@@ -1,16 +1,14 @@
 import React from 'react'
 import QuantityBtn from './QuantityBtn'
 
-export default function Quantity () {
-    const contentBtns = [
-        {title:'All', id: 1},
-        {title:'Done', id: 2},
-        {title:'Undone', id: 3}
-    ]
+export default function Quantity ({filterAllBtn, filterDoneBtn, filterUndoneBtn}) {
+    
 
     return (
         <div className='main__buttons'>
-            {contentBtns.map(btn => <QuantityBtn title={btn.title} key={btn.id}/>)}
+            <button onClick={ () => filterAllBtn()} type="button" className="btnShow">All</button>
+            <button onClick={ () => filterDoneBtn()} type="button" className="btnShow">Done</button>
+            <button onClick={ () => filterUndoneBtn()} type="button" className="btnShow">Undone</button>
         </div>
     )
 }
