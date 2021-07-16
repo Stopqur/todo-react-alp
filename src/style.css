@@ -184,6 +184,12 @@ ul {
 
 }
 
+/* List */
+
+.main__taskList {
+    padding-bottom: 25px;
+}
+
 .taskItem {
     display: flex;
     justify-content: space-between;
@@ -243,7 +249,7 @@ ul {
     height: 25px;
 }
 
-/* Pagination */
+/*Pagination */
 
 .pagination {
     display: flex;
@@ -254,11 +260,14 @@ ul {
 
 .pagination__btn {
     padding: 5px 15px;
-    background-color: teal;
-    color: #000;
-    border: 1px solid #000
+    color: orange;
+    border: 2px solid #fff;
 }
 
 .pagination__btn + .pagination__btn {
     margin-left: 15px;
+}
+
+.pagination__btn_active {
+    background-color: #fff;
 }
