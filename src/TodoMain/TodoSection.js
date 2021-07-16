@@ -1,4 +1,6 @@
 import React, {useState} from 'react'
+import { Typography, Button, Box, List } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
 
 import TodoTitle from './TodoTitle'
 import TodoForm from './TodoForm'
@@ -6,8 +8,16 @@ import Options from './Options'
 import TodoItem from './TodoItem'
 import Pagination from './Pagination'
 
+const useStyles = makeStyles(() => ({
+    title: {
+        color: 'white'
+    }
+}))
+
 
 function TodoSection({createBlock}) {
+    const classes = useStyles();
+
     const [todos, setTodos] = useState([])
     
     const [filterTodos, setFilterTodos] = useState([...todos])
@@ -16,7 +26,6 @@ function TodoSection({createBlock}) {
 
     const [pagination, setPagination] = useState([])
 
-    const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
     const [countTodoOnPage] = useState(5)
 
@@ -43,7 +52,7 @@ function TodoSection({createBlock}) {
         }
         setTodos([...todos, newItem])
         setFilterTodos([...todos, newItem])
-       
+        console.log('its working')
         if (filterTodos.length > 2) {
             handleSliceTodos()
             console.log('show me count todo:', filterTodos.length,filterTodos,todos)
@@ -118,30 +127,65 @@ function TodoSection({createBlock}) {
         setFilterTodos(todos.slice(firstIdTask, lastIdTask))
     }
 
+   
     
     return (
-        <section className='main__menu'>
-            <TodoTitle />    
-            <TodoForm 
+        <Box>
+            <Typography className={ classes.title } variant='h3'>toDo List</Typography>
+            <TodoForm
                 addTodo={handleAddItem} 
                 titleInput={titleInput} 
                 handleChangeInput={handleChangeInput} 
                 deleteInput={handleDeleteInput} 
+                colorText={classes.title}
+            >
+            </TodoForm>
+            <Options 
+                sortTodosLater={handleSortLater} 
+                sortTodosEarlier={handleSortEarlier} 
+                filterAll={handleFilterAll} 
+                filterUndone={handleFilterUndone} 
+                filterDone={handleFilterDone}
             />
-            <Options sortTodosLater={handleSortLater} sortTodosEarlier={handleSortEarlier} filterAll={handleFilterAll} filterUndone={handleFilterUndone} filterDone={handleFilterDone}/>
-            <ul className="main__taskList">
-                {filterTodos.map((todo, index) => {
-                    return <TodoItem 
-                        number={index}
-                        todoDelete={handleDeleteToDo}
-                        todo={todo} 
-                        key={index}/>
-                    })
-                }
-            </ul>
+            <List>
+            {filterTodos.map((todo, index) => {
+                 return <TodoItem 
+                    style={{width: '100%'}}
+                    colorText={classes.title}
+                    number={index}
+                    todoDelete={handleDeleteToDo}
+                    todo={todo} 
+                    key={index}
+                        />
+                })
+             }
+            </List>
             <Pagination btnSwitchPage={handlePaginationBtn} countTodos={todos.length} countTodoOnPage={countTodoOnPage}/>
-        </section>
+        </Box>
     )
+    // (
+        // <section className='main__menu'>
+        //     <TodoTitle />    
+        //     <TodoForm 
+        //         addTodo={handleAddItem} 
+        //         titleInput={titleInput} 
+        //         handleChangeInput={handleChangeInput} 
+        //         deleteInput={handleDeleteInput} 
+        //     />
+        //     <Options sortTodosLater={handleSortLater} sortTodosEarlier={handleSortEarlier} filterAll={handleFilterAll} filterUndone={handleFilterUndone} filterDone={handleFilterDone}/>
+        //     <ul className="main__taskList">
+        //         {filterTodos.map((todo, index) => {
+        //             return <TodoItem 
+        //                 number={index}
+        //                 todoDelete={handleDeleteToDo}
+        //                 todo={todo} 
+        //                 key={index}/>
+        //             })
+        //         }
+        //     </ul>
+        //     <Pagination btnSwitchPage={handlePaginationBtn} countTodos={todos.length} countTodoOnPage={countTodoOnPage}/>
+        // </section>
+    // )
 }
 
 export default TodoSection

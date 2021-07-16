@@ -1,11 +1,13 @@
 import React from 'react'
 import Section from './TodoSection'
+import { Container } from '@material-ui/core';
 
 function TodoMain(props) {
     return (
-        <main className='main container'>
+        <Container>
             <Section createBlock={props.createBlock}/>
-        </main>
+        </Container>
+
     )
 }
 

@@ -1,7 +1,20 @@
 import React, {useState} from 'react'
+import { ListItem, InputLabel, Input, Button, Box, Typography, CardMedia } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
 
-export default function TodoItem({todo, todoDelete, number}) {
-    
+const useStyles = makeStyles(() => ({
+    title: {
+        color: 'white'
+    },
+    dateText: {
+        color: 'orange'
+    }
+}))
+
+
+export default function TodoItem({todo, todoDelete, number, colorText}) {
+    const classes = useStyles();
+
     const [classItem, setClassItem] = useState('taskItem__text')
 
 
@@ -24,25 +37,49 @@ export default function TodoItem({todo, todoDelete, number}) {
         console.log(todo.id)
     }
 
-    return  <li className="taskItem">
-                <label className="taskItem__label" htmlFor={todo.id}>
-                <input 
-                    id={todo.id} 
+    return (
+        <ListItem>
+            <InputLabel htmlFor={todo.id}>
+                <Input
+                    id={todo.id.toString()} 
                     type="checkbox" 
                     onChange={() => completeTodo()}
                     checked={todo.completed}
-                />
-                <div className="taskItem__textBox">
-                    <p className={classItem}>{todo.title}, {number}, {`${todo.completed}`}</p>
-                </div>
-                <p className="taskItem__date">{todo.date.toLocaleString()}</p>
-                </label>
-                <button onClick={() => trashClick()} 
-                    type="button" 
-                    className="taskItem__btnCheck">
-                    <img className="taskItem__btnCheckIcon" src="https://img.icons8.com/material-sharp/24/000000/trash.png" />
-                </button>
-            </li>
+                >
+
+                </Input>
+                <Box>
+                    <Typography className={classes.title} >{todo.title}, {number}, {`${todo.completed}`}</Typography>
+                </Box>
+                <Typography className={classes.dateText}>{todo.date.toLocaleString()}</Typography>
+            </InputLabel>
+            <Button onClick={() => trashClick()} type="button">
+                Trash
+                {/* <CardMedia></CardMedia> */}
+            </Button>
+        </ListItem>
+    
+
+            // <li className="taskItem">
+            //     <label className="taskItem__label" htmlFor={todo.id}>
+                //     <input 
+                //         id={todo.id} 
+                //         type="checkbox" 
+                //         onChange={() => completeTodo()}
+                //         checked={todo.completed}
+                //     />
+                //     <div className="taskItem__textBox">
+                //         <p className={classItem}>{todo.title}, {number}, {`${todo.completed}`}</p>
+                //     </div>
+                //     <p className="taskItem__date">{todo.date.toLocaleString()}</p>
+            //     </label>
+            //     <button onClick={() => trashClick()} 
+            //         type="button" 
+            //         className="taskItem__btnCheck">
+            //         <img className="taskItem__btnCheckIcon" src="https://img.icons8.com/material-sharp/24/000000/trash.png" />
+            //     </button>
+            // </li>
+    )
 }   
 
 {/* <label classNameName = "taskItem__label" for="itemCheck">
