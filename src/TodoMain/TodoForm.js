@@ -23,7 +23,7 @@ export default function TodoForm({titleInput, colorText, currentTime, handleChan
     // }
 
     return ( 
-        <Box>
+        <Box mt={3} pb={5}>
             <InputLabel>Ввод текста</InputLabel>
             <FormControl component='form' style={ { display: 'flex'} } onSubmit={(e) => handleFormSubmit(e)}>
                 <Box display='flex' justifyContent="space-around"> 

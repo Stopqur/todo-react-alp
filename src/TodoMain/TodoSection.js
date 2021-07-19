@@ -130,7 +130,7 @@ function TodoSection({createBlock}) {
    
     
     return (
-        <Box>
+        <Box p={10}>
             <Typography className={ classes.title } variant='h3'>toDo List</Typography>
             <TodoForm
                 addTodo={handleAddItem} 

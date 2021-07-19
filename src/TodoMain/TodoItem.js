@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { ListItem, InputLabel, Input, Button, Box, Typography, CardMedia } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
-
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 const useStyles = makeStyles(() => ({
     title: {
         color: 'white'
@@ -53,10 +53,7 @@ export default function TodoItem({todo, todoDelete, number, colorText}) {
                 </Box>
                 <Typography className={classes.dateText}>{todo.date.toLocaleString()}</Typography>
             </InputLabel>
-            <Button onClick={() => trashClick()} type="button">
-                Trash
-                {/* <CardMedia></CardMedia> */}
-            </Button>
+            <Button startIcon={<DeleteOutlinedIcon />} onClick={() => trashClick()} type="button"></Button>
         </ListItem>
     
 

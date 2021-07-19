@@ -4,7 +4,7 @@ import { Container } from '@material-ui/core';
 
 function TodoMain(props) {
     return (
-        <Container>
+        <Container maxWidth='md'>
             <Section createBlock={props.createBlock}/>
         </Container>
 
