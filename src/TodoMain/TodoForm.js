@@ -1,25 +1,23 @@
 import React, {useState} from 'react'
 
-export default function TodoForm({titleInput, currentTime, handleChangeInput, addTodo, deleteInput, changeTime, changeDate, currentDate}) {
+export default function TodoForm({ addTodo, deleteInput}) {
+
+    const [titleInput, setTitleInput] = useState('')
 
     const handleFormSubmit = (event) => {
         if(titleInput !== '') {
             event.preventDefault();
             console.log("SENT VALUE", event.target.value);
             addTodo(titleInput);
-            deleteInput()
+            setTitleInput('')
         } event.preventDefault();
     }
 
-    const [value, setValue] = useState('');
 
-    // const reset = () => {
-    //     setValue('');
-    // }
+    function handleChangeInput (event) {
+        setTitleInput(event.target.value)
+    }
 
-    // function handleChangeInput (e) {
-    //     setValue(e.target.value)
-    // }
 
     return (
         <div>
@@ -32,7 +30,7 @@ export default function TodoForm({titleInput, currentTime, handleChangeInput, ad
                     className = "main__input" 
                     type="text" 
                     value={titleInput} 
-                    onChange={handleChangeInput} 
+                    onChange={(e) => handleChangeInput(e)} 
                     placeholder="Write a goal..."
                     autoComplete='off'
                 />
@@ -42,8 +40,6 @@ export default function TodoForm({titleInput, currentTime, handleChangeInput, ad
                 >
                     Create
                 </button>
-                {/* <FormInput onClickAdd={onClickAdd} changeValue={valueInput} onChange={onChangeTodo}/> */}
-                {/* <FormButton onClick={onClickAdd()}/> */}
             </form>
         </div>
     )

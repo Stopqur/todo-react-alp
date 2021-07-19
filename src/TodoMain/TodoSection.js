@@ -8,17 +8,18 @@ import Pagination from './Pagination'
 
 
 function TodoSection({createBlock}) {
+    console.log(' ========= Render todoSection')
     const [todos, setTodos] = useState([])
     
     const [filterTodos, setFilterTodos] = useState([...todos])
     
-    const [titleInput, setTitleInput] = useState('')
+    // const [titleInput, setTitleInput] = useState('')
 
     const [pagination, setPagination] = useState([])
 
     const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState(1)
-    const [countTodoOnPage] = useState(5)
+    const [countTodoOnPage] = useState(3)
 
 
 
@@ -53,14 +54,33 @@ function TodoSection({createBlock}) {
     }
     
 
-    function handleChangeInput (e) {
-        setTitleInput(e.target.value)
+    // function handleChangeInput (event) {
+    //     setTitleInput(event.target.value)
+    // }
+    
+    // function handleDeleteInput() {
+    //     setTitleInput('')
+    // }
+    
+    const [classItem, setClassItem] = useState('taskItem__text')
+    const [changeTodo, setChangeTodo] = useState('')
+
+
+    function handleCompleteTodo (task) {
+        task.completed = !task.completed
+        if (task.completed === true) {
+            setClassItem('taskItem__text taskItemItem__text_decor')
+
+        } else {
+            setClassItem('taskItem__text')
+        }
     }
     
-    function handleDeleteInput() {
-        setTitleInput('')
+    function handleChangeText (e, task) {
+        setChangeTodo(task.title)
+        task.title = e.target.value
     }
-    
+
     function handleDeleteToDo (itemId) {
         setFilterTodos([...filterTodos.filter(todo => todo.id !== itemId) ])
         setTodos([...todos.filter(todo => todo.id !== itemId) ])
@@ -71,12 +91,13 @@ function TodoSection({createBlock}) {
     // Filterbuttons
 
     function handleFilterAll () {
-        setFilterTodos(todos)
+        setFilterTodos([...todos])
     }
 
     function handleFilterDone () {
         // setFilterTodos([...todos])
         setFilterTodos(todos.filter(todo => todo.completed === true))
+        console.log(filterTodos)
     }
 
     function handleFilterUndone () {
@@ -124,18 +145,17 @@ function TodoSection({createBlock}) {
             <TodoTitle />    
             <TodoForm 
                 addTodo={handleAddItem} 
-                titleInput={titleInput} 
-                handleChangeInput={handleChangeInput} 
-                deleteInput={handleDeleteInput} 
             />
             <Options sortTodosLater={handleSortLater} sortTodosEarlier={handleSortEarlier} filterAll={handleFilterAll} filterUndone={handleFilterUndone} filterDone={handleFilterDone}/>
             <ul className="main__taskList">
-                {filterTodos.map((todo, index) => {
+                {filterTodos.map(todo => {
                     return <TodoItem 
-                        number={index}
+                        changeText={handleChangeText}
+                        classItem={classItem}
+                        completeTodo={handleCompleteTodo}
                         todoDelete={handleDeleteToDo}
                         todo={todo} 
-                        key={index}/>
+                        key={todo.id}/>
                     })
                 }
             </ul>

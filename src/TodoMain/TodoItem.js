@@ -1,43 +1,44 @@
 import React, {useState} from 'react'
 
-export default function TodoItem({todo, todoDelete, number}) {
+export default function TodoItem({todo, todoDelete, changeText, classItem,completeTodo}) {
     
-    const [classItem, setClassItem] = useState('taskItem__text')
+    // const [classItem, setClassItem] = useState('taskItem__text')
 
+    // const [changeTodo, setChangeTodo] = useState('')
+    
+    // function changeText (e) {
+    //     setChangeTodo(todo.title)
+    //     todo.title = e.target.value
+    // }
 
-    let noneLine = 'taskItem__text'
+    // function completeTodo () {
+    //     todo.completed = !todo.completed
+    //     if (todo.completed === true) {
+    //         setClassItem('taskItem__text taskItemItem__text_decor')
 
-    function completeTodo () {
-        todo.completed = !todo.completed
-            if (todo.completed === true) {
-                const currentClass = 'taskItem__text taskItemItem__text_decor'
-                return setClassItem(currentClass)
+    //     } else {
+    //         setClassItem('taskItem__text')
+    //     }
+    // }
 
-            } else {
-                const currentClass = 'taskItem__text'
-                return setClassItem(currentClass)
-            }
-        }
-
-    function trashClick () {
-        todoDelete(todo.id)
-        console.log(todo.id)
-    }
 
     return  <li className="taskItem">
                 <label className="taskItem__label" htmlFor={todo.id}>
-                <input 
-                    id={todo.id} 
-                    type="checkbox" 
-                    onChange={() => completeTodo()}
-                    checked={todo.completed}
-                />
+                    <input 
+                        id={todo.id} 
+                        type="checkbox" 
+                        onChange={() => completeTodo(todo)}
+                        checked={todo.completed}
+                    />
+                </label>
                 <div className="taskItem__textBox">
-                    <p className={classItem}>{todo.title}, {number}, {`${todo.completed}`}</p>
+                    <input onChange={(e) => changeText(e, todo)} id={todo.id} className={classItem} value={`${todo.title}, ${todo.completed}`}></input>
+                    {/* <input onChange={(e) => changeText(e, todo)} key={todo.id} id={todo.id} className={classItem} value={todo.title}></input> */}
+
+                    {/* <p className={classItem}>{todo.title}, {number}, {`${todo.completed}`}</p> */}
                 </div>
                 <p className="taskItem__date">{todo.date.toLocaleString()}</p>
-                </label>
-                <button onClick={() => trashClick()} 
+                <button onClick={() => todoDelete(todo.id)} 
                     type="button" 
                     className="taskItem__btnCheck">
                     <img className="taskItem__btnCheckIcon" src="https://img.icons8.com/material-sharp/24/000000/trash.png" />

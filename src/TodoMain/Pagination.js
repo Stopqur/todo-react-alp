@@ -9,7 +9,7 @@ function Pagination ({ btnSwitchPage, countTodoOnPage, countTodos }) {
     }
     return (
         <div className='pagination'>
-            {pageNum.map(btn => <button onClick={() => btnSwitchPage(btn)} className='pagination__btn'>{btn}</button>)}
+            {pageNum.map((btn, i) => <button onClick={() => btnSwitchPage(btn)} key={i} className='pagination__btn'>{btn}</button>)}
             {/* {pageNum}
             {console.log("array:",pageNum,countTodos,countTodoOnPage)} */}
         </div>)
