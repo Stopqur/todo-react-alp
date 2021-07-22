@@ -188,6 +188,7 @@ ul {
 /* List */
 
 .main__taskList {
+    height: 290px;
     padding-bottom: 25px;
 }
 
@@ -274,4 +275,10 @@ ul {
 
 .pagination__btn_active {
     background-color: #fff;
+}
+
+.titleMotivation {
+    color: orange;
+    font-size: 40px;
+    
 }
