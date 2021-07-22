@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 
-export default function TodoItem({todo, todoDelete, changeText, completeTodo}) {
+export default function TodoItem({todo, todoDelete, changeText, completeTodo, taskFlag}) {
     
     const [boolVal, setBoolVal] = useState(true)
     const [classItem, setClassItem] = useState('taskItem__text')
     
     const [changeTitle, setChangeTitle] = useState(todo.title)
 
-    const [taskFlag, setTaskFlag] = useState(todo.completed)
+    // const [taskFlag, setTaskFlag] = useState(todo.completed)
 
     // function completeTodo (task) {
     //     console.log(task.completed)

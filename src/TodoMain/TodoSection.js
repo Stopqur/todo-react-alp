@@ -19,10 +19,10 @@ function TodoSection({createBlock}) {
     
     const countTodoOnPage = 3    
 
-    function sliceTodosList() {
+    function sliceTodosList(arrTodo) {
         const lastIdTask = currentPage * countTodoOnPage
         const firstIdTask = lastIdTask - countTodoOnPage
-        setFilterTodos(todos.slice(firstIdTask, lastIdTask))
+        setFilterTodos(arrTodo.slice(firstIdTask, lastIdTask))
     }
 
     function handleAddItem (userInput) {
@@ -38,7 +38,7 @@ function TodoSection({createBlock}) {
         setTodos([...todos, newItem])
         setFilterTodos([...todos, newItem])
         if (filterTodos.length > 2) {
-            sliceTodosList()
+            sliceTodosList(todos)
         }
     }
 
@@ -46,23 +46,23 @@ function TodoSection({createBlock}) {
     const [taskFlag, setTaskFlag] = useState(false)
 
     function completeTodo (task) {
-        setTaskFlag(!task.completed)
+        setTaskFlag(!taskFlag)
         task.completed = taskFlag
         console.log(task.completed, taskFlag)
     }
 
     useEffect(() => {
-        sliceTodosList()
+        sliceTodosList(todos)
         console.log('it"s working')
     }, [currentPage])
 
     useEffect (() => {
         if (filterTodos.length < 1 && todos.length !== 0 && currentPage !== 1) {
             setCurrentPage(currentPage - 1)
-            sliceTodosList()
+            sliceTodosList(todos)
         } 
         else if (filterTodos.length < 1 && todos.length !== 0 && currentPage === 1) {
-            sliceTodosList()
+            sliceTodosList(todos)
         }
     }, [filterTodos.length])
     
@@ -105,12 +105,17 @@ function TodoSection({createBlock}) {
     //     console.log(task.completed, taskFlag)
     // }
 
-    
 
-    // Filterbuttons
+
+
+    
+// Filtration
+    const lastIdTask = currentPage * countTodoOnPage
+    const firstIdTask = lastIdTask - countTodoOnPage
+
     function handleFilterAll () {
         setFlagHideBtn(false)
-        sliceTodosList()
+        sliceTodosList(todos)
         console.log(filterTodos.length)
     }
     
@@ -121,7 +126,7 @@ function TodoSection({createBlock}) {
         //     setFlagHideBtn(true)
         // } 
         // else{setFlagHideBtn(false)}
-        console.log(filterTodos.length, flagHideBtn)
+        console.log(filterTodos.length, todos.length, flagHideBtn)
     }
     
     function handleFilterUndone () {
@@ -133,20 +138,6 @@ function TodoSection({createBlock}) {
         // else{setFlagHideBtn(false)}
     }
 
-// Hide pagination on length array less 3
-
-    function handleHidePagi () {
-        if(filterTodos.length < 3) {
-            setFlagHideBtn(true)
-            console.log(filterTodos.length)
-        } 
-        else {
-            setFlagHideBtn(false)
-            console.log(filterTodos.length)
-
-        }
-    }
-    
 
     
 
@@ -169,7 +160,21 @@ function TodoSection({createBlock}) {
 
 
 
-    //Pagination 
+//Pagination 
+
+    // Hide pagination on length array less 3
+
+    function handleHidePagi () {
+        if(filterTodos.length < 3) {
+            setFlagHideBtn(true)
+            console.log(filterTodos.length)
+        } 
+        else {
+            setFlagHideBtn(false)
+            console.log(filterTodos.length)
+
+        }
+    }
 
     // function changePage (number) {
     //     setCurrentPage(number)
@@ -180,8 +185,7 @@ function TodoSection({createBlock}) {
     // // }
 
     
-    const lastIdTask = currentPage * countTodoOnPage
-    const firstIdTask = lastIdTask - countTodoOnPage
+    
     // const currentTasks = setFilterTodos(todos.slice(firstIdTask, lastIdTask))
     
     // function handleSlicePrevTodos () {
@@ -222,6 +226,7 @@ function TodoSection({createBlock}) {
                                 key={todo.id}
                                 setTitleInput={setTitleInput}
                                 titleInput={titleInput}
+                                taskFlag={taskFlag}
                                 // setTaskFlag={setTaskFlag}
                                 
                                 // sliceTodo={handleSliceTodos}
@@ -229,7 +234,7 @@ function TodoSection({createBlock}) {
                     })
                 }
             </ul>
-            {flagHideBtn || todos.length > 3 && <Pagination 
+            {todos.length > 3 && <Pagination 
                 btnSwitchPage={handlePaginationBtn} 
                 countTodoOnPage={countTodoOnPage}                
                 countFilterTodo={todos.length}
