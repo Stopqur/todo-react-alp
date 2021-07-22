@@ -1,7 +1,7 @@
 import React from 'react'
 import QuantityBtn from './QuantityBtn'
 
-export default function Quantity ({filterAllBtn, filterDoneBtn, filterUndoneBtn, hidePagiBtn}) {
+export default function Quantity ({filterAllBtn, filterDoneBtn, filterUndoneBtn}) {
     
 
     return (

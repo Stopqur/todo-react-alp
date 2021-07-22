@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 export default function TodoForm({ addTodo, setTitleInput, titleInput }) {
 
 
-    const handleFormSubmit = (event) => {
+    function handleFormSubmit (event) {
         if(titleInput !== '') {
             event.preventDefault();
             addTodo(titleInput);

@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 
-export default function TodoItem({todo, todoDelete, changeText, completeTodo, taskFlag}) {
+export default function TodoItem({todo, todoDelete, changeText, completeTodo, changeTitle}) {
     
     const [boolVal, setBoolVal] = useState(true)
     const [classItem, setClassItem] = useState('taskItem__text')
     
-    const [changeTitle, setChangeTitle] = useState(todo.title)
+    // const [changeTitle, setChangeTitle] = useState(todo.title)
 
     // const [taskFlag, setTaskFlag] = useState(todo.completed)
 
@@ -22,10 +22,9 @@ export default function TodoItem({todo, todoDelete, changeText, completeTodo, ta
     //     // }
     // }
 
-    function changeText (e) {
-        setChangeTitle(e.target.value)
-        // setTitleInput(changeTitle)
-    }
+    // function changeText (e) {
+    //     setChangeTitle(e.target.value)
+    // }
 
     // const [changeTodo, setChangeTodo] = useState('')
     
@@ -58,7 +57,7 @@ export default function TodoItem({todo, todoDelete, changeText, completeTodo, ta
                 <input 
                     id={todo.id} 
                     type="checkbox" 
-                    onChange={() => completeTodo(todo)}
+                    onChange={() => completeTodo(todo.id)}
                     checked={todo.completed}
                 />
             </label>
@@ -69,8 +68,8 @@ export default function TodoItem({todo, todoDelete, changeText, completeTodo, ta
             
             >
                 { (boolVal) 
-                ? <p className={classItem}>{changeTitle}</p> 
-                : <textarea onKeyPress={clickEnter} onChange={(e) => changeText(e)} id={todo.id} className={classItem} value={changeTitle}></textarea>
+                ? <p className={classItem}>{todo.title}</p> 
+                : <textarea onKeyPress={clickEnter} onChange={(e) => changeText(e, todo.id)} id={todo.id} className={classItem} value={todo.title}></textarea>
                 }
                 {/* {`${todo.title}, ${todo.completed}`} */}
             </form>

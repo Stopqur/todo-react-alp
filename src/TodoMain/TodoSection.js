@@ -7,8 +7,8 @@ import TodoItem from './TodoItem'
 import Pagination from './Pagination'
 
 
-function TodoSection({createBlock}) {
-    console.log(' ========= Render todoSection')
+function TodoSection() {
+    
 
     const [titleInput, setTitleInput] = useState('')
     
@@ -16,7 +16,7 @@ function TodoSection({createBlock}) {
     const [filterTodos, setFilterTodos] = useState([...todos])
     const [currentPage, setCurrentPage] = useState(1)
     const [flagHideBtn, setFlagHideBtn] = useState(false)
-    
+    console.log(' ========= Render todoSection', todos)
     const countTodoOnPage = 3    
 
     function sliceTodosList(arrTodo) {
@@ -27,9 +27,9 @@ function TodoSection({createBlock}) {
 
     function handleAddItem (userInput) {
         const newItem = {
-            id: Date.now(),
+            id: Date.now(), 
             title: titleInput,
-            completed: taskFlag,
+            completed: false,
             date: new Date(),
             class: 'taskItem__text'
         }
@@ -43,13 +43,6 @@ function TodoSection({createBlock}) {
     }
 
 
-    const [taskFlag, setTaskFlag] = useState(false)
-
-    function completeTodo (task) {
-        setTaskFlag(!taskFlag)
-        task.completed = taskFlag
-        console.log(task.completed, taskFlag)
-    }
 
     useEffect(() => {
         sliceTodosList(todos)
@@ -66,34 +59,41 @@ function TodoSection({createBlock}) {
         }
     }, [filterTodos.length])
     
+
+
+
+    const [taskFlag, setTaskFlag] = useState(false)
+
+    function completeTodo (id) {
+        setFilterTodos([...filterTodos.map(todo => {
+            if (todo.id === id) {
+                todo.completed = !todo.completed
+                return todo
+            } return todo
+        })])
+    }
+
+    const [changeTitle, setChangeTitle] = useState('')
+
+    function changeText (e, id) {
+        setFilterTodos([...filterTodos.map(todo => {
+            if (todo.id === id) {
+                // setChangeTitle(e.target.value)
+                todo.title = e.target.value
+                console.log(todo.title)
+                return todo
+            } return todo
+        })])
+        // setChangeTitle(e.target.value)
+        // setTitleInput(changeTitle)
+    }
+
     function handleDeleteToDo (itemId) {
         setFilterTodos([...filterTodos.filter(todo => todo.id !== itemId) ])
         setTodos([...todos.filter(todo => todo.id !== itemId) ])
         console.log(currentPage, filterTodos.length)
-        
-        // if (filterTodos.length < 1 ) {
-        //     // setCurrentPage(currentPage - 1)
-        //     const lastIdTask = currentPage * countTodoOnPage
-        //     const firstIdTask = lastIdTask - countTodoOnPage
-        //     setFilterTodos([...filterTodos.filter(todo => todo.id !== itemId).slice(firstIdTask - 3, lastIdTask - 3) ])
-        //     setTodos([...todos.filter(todo => todo.id !== itemId).slice(firstIdTask - 3, lastIdTask - 3) ])
-        // }
-
-
-
-        //     // setFilterTodos(todos.slice(currentPage))
-        //     // handleSlicePrevTodos()
     }
     
-    // function handleCompleteTodo (task) {
-    //     task.completed = !task.completed
-    //     // if (task.completed === true) {
-    //     //     setClassItem('taskItem__text taskItemItem__text_decor')
-            
-    //     // } else {
-    //     //     setClassItem('taskItem__text')
-    //     // }
-    // }
 
 
 //----------------Task FLAG-------------------
@@ -224,9 +224,10 @@ function TodoSection({createBlock}) {
                                 classItem={todo.class}
                                 todo={todo} 
                                 key={todo.id}
-                                setTitleInput={setTitleInput}
                                 titleInput={titleInput}
+                                changeTitle={changeTitle}
                                 taskFlag={taskFlag}
+                                changeText={changeText}
                                 // setTaskFlag={setTaskFlag}
                                 
                                 // sliceTodo={handleSliceTodos}
