@@ -1,18 +1,19 @@
 import React, {useState} from 'react'
 
-export default function TodoForm({ addTodo, setTitleInput, titleInput }) {
+export default function TodoForm({ addTodo}) {
 
+    const [titleInput, setTitleInput] = useState('')
 
     function handleFormSubmit (event) {
         if(titleInput !== '') {
             event.preventDefault();
-            addTodo(titleInput);
+            addTodo(titleInput, setTitleInput);
         } event.preventDefault();
     }
 
-
+    
     function handleChangeInput (event) {
-        setTitleInput(event.target.value)
+        setTitleInput(event.target.value)        
     }
 
 

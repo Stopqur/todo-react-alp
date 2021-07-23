@@ -10,7 +10,7 @@ import Pagination from './Pagination'
 function TodoSection() {
     
 
-    const [titleInput, setTitleInput] = useState('')
+    // const [titleInput, setTitleInput] = useState('')
     
     const [todos, setTodos] = useState([])
     const [filterTodos, setFilterTodos] = useState([...todos])
@@ -25,16 +25,16 @@ function TodoSection() {
         setFilterTodos(arrTodo.slice(firstIdTask, lastIdTask))
     }
 
-    function handleAddItem (userInput) {
+    function handleAddItem (userInput, funcDelete) {
         const newItem = {
             id: Date.now(), 
-            title: titleInput,
+            title: userInput,
             completed: false,
             date: new Date(),
             class: 'taskItem__text'
         }
-        console.log(titleInput)
-        setTitleInput('')
+        // console.log(titleInput)
+        funcDelete('')
         setTodos([...todos, newItem])
         setFilterTodos([...todos, newItem])
         if (filterTodos.length > 2) {
@@ -61,9 +61,6 @@ function TodoSection() {
     
 
 
-
-    const [taskFlag, setTaskFlag] = useState(false)
-
     function completeTodo (id) {
         setFilterTodos([...filterTodos.map(todo => {
             if (todo.id === id) {
@@ -73,40 +70,11 @@ function TodoSection() {
         })])
     }
 
-    const [changeTitle, setChangeTitle] = useState('')
-
-    function changeText (e, id) {
-        setFilterTodos([...filterTodos.map(todo => {
-            if (todo.id === id) {
-                // setChangeTitle(e.target.value)
-                todo.title = e.target.value
-                console.log(todo.title)
-                return todo
-            } return todo
-        })])
-        // setChangeTitle(e.target.value)
-        // setTitleInput(changeTitle)
-    }
-
+    
     function handleDeleteToDo (itemId) {
         setFilterTodos([...filterTodos.filter(todo => todo.id !== itemId) ])
         setTodos([...todos.filter(todo => todo.id !== itemId) ])
-        console.log(currentPage, filterTodos.length)
     }
-    
-
-
-//----------------Task FLAG-------------------
-
-    // const [taskFlag, setTaskFlag] = useState(false)
-
-    // function completeTodo (task) {
-    //     setTaskFlag(!taskFlag)
-    //     console.log(task.completed, taskFlag)
-    // }
-
-
-
 
     
 // Filtration
@@ -120,8 +88,14 @@ function TodoSection() {
     }
     
     function handleFilterDone () {
-        setFilterTodos(todos.filter(todo => todo.completed === true).slice(firstIdTask, lastIdTask))
-        handleHidePagi()
+        if (todos.length === 1 && todos[0].completed === false) {
+            setFilterTodos([])
+            console.log('Less 1: ', filterTodos, filterTodos.length)
+        } else { 
+            setFilterTodos(todos.filter(todo => todo.completed === true))
+            console.log('More 1: ', filterTodos.length)
+            handleHidePagi()
+        }
         // if(filterTodos.length < 3) {
         //     setFlagHideBtn(true)
         // } 
@@ -130,7 +104,9 @@ function TodoSection() {
     }
     
     function handleFilterUndone () {
-        setFilterTodos(todos.filter(todo => todo.completed === false).slice(firstIdTask, lastIdTask))
+        setFilterTodos(todos.filter(todo => todo.completed === false))
+        console.log(filterTodos)
+
         handleHidePagi()
         // if(filterTodos.length < 3) {
         //     setFlagHideBtn(true)
@@ -143,12 +119,13 @@ function TodoSection() {
 
 
 
-    //Sort
+//Sort
     function handleSortEarlier () {
         const sortTodo = [...filterTodos]
         setFilterTodos(sortTodo.sort(function(a, b) {
             return b.id - a.id
         }))
+        console.log(filterTodos)
     }
     function handleSortLater () {
         const sortTodo = [...filterTodos]
@@ -176,38 +153,54 @@ function TodoSection() {
         }
     }
 
-    // function changePage (number) {
-    //     setCurrentPage(number)
-    // }
-
-    // // function handleSliceTodos () {
-    // //     setFilterTodos(currentTasks)
-    // // }
-
-    
-    
-    // const currentTasks = setFilterTodos(todos.slice(firstIdTask, lastIdTask))
-    
-    // function handleSlicePrevTodos () {
-    //     setFilterTodos(todos.slice(currentPage * 3 - 6, currentPage * 3 - 3))
-    // }
-
     function handlePaginationBtn (num) {
         setCurrentPage(num)
         console.log('number of page: ', currentPage)
     }
-       
     
+
+
+
+// Actions on definite task
+
+    const [boolVal, setBoolVal] = useState(true)
+
+    function handleClickForm (task) {
+        setBoolVal(false)
+        console.log(task)
+    }
+
+    function handleClickEsc (e, task, func) {
+        if (e.key === 'Escape') {
+            setFilterTodos([...filterTodos.map(todo => {
+                func(task.title)
+                // task.title = old
+                return todo
+            })])
+            setBoolVal(true)
+        }
+    }
+
+    function handleClickEnter (event, newTitle, task) {
+        if(boolVal === false && event.key === 'Enter') {
+            setFilterTodos([...filterTodos.map(todo => {
+                task.title = newTitle
+                return todo
+            })])
+            setBoolVal(true)
+            
+        }
+    }
+
+
+
+
 
 
     return (
         <section className='main__menu'>
             <TodoTitle />    
-            <TodoForm 
-                addTodo={handleAddItem} 
-                setTitleInput={setTitleInput}
-                titleInput={titleInput}
-            />
+            <TodoForm addTodo={handleAddItem}/>
             <Options 
                 sortTodosLater={handleSortLater} 
                 sortTodosEarlier={handleSortEarlier} 
@@ -224,10 +217,12 @@ function TodoSection() {
                                 classItem={todo.class}
                                 todo={todo} 
                                 key={todo.id}
-                                titleInput={titleInput}
-                                changeTitle={changeTitle}
-                                taskFlag={taskFlag}
-                                changeText={changeText}
+                                // titleInput={titleInput}
+                                clickEnter={handleClickEnter}
+                                clickForm={handleClickForm}
+                                clickEsc={handleClickEsc}
+                                boolVal={boolVal}
+                                // changeText={changeText}
                                 // setTaskFlag={setTaskFlag}
                                 
                                 // sliceTodo={handleSliceTodos}

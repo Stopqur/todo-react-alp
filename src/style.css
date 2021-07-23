@@ -188,7 +188,7 @@ ul {
 /* List */
 
 .main__taskList {
-    height: 290px;
+    min-height: 290px;
     padding-bottom: 25px;
 }
 
